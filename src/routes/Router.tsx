@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "../Pages/HomePage";
+import HomePage from "../Pages/Home/HomePage";
+import Login from "../Components/Login/login";
 
 
 const Router: React.FC = () => {
@@ -8,6 +9,7 @@ const Router: React.FC = () => {
     <div>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login/>}></Route>
       </Routes>
     </div>
   );
