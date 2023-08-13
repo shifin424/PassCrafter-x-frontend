@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InputField from '../InputField/InputField'
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -23,10 +24,10 @@ function Login() {
     <div>
       <section>
         <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8 mx-auto">
-          <div className="w-full max-w-md bg-white rounded-lg shadow-md dark:border dark:border-gray-700">
+          <div className="w-full max-w-md bg-white rounded-lg  shadow-md dark:border dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Let's Get Started!
+              Welcome back!
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <InputField
@@ -56,12 +57,12 @@ function Login() {
 
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
-                  <a
-                    href="#"
+                  <Link
+                    to={'/sign-up'}
                     className="font-medium text-blue-500 hover:underline dark:text-primary-500"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>

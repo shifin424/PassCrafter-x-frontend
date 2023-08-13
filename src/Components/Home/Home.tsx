@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "../../assets/Images/password-img-og.png";
+import Image from "../../utils/assets/Images/password-img-og.png";
 
 function Home() {
   return (

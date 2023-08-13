@@ -1,7 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../Pages/Home/HomePage";
-import Login from "../Components/Login/login";
+import Login from "../Components/Login/Login";
+import SingUpPage from "../Pages/SignUp/SingUpPage";
 
 
 const Router: React.FC = () => {
@@ -10,6 +11,7 @@ const Router: React.FC = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login/>}></Route>
+        <Route path='/sign-up' element={<SingUpPage/>}></Route>
       </Routes>
     </div>
   );
