@@ -1,51 +1,71 @@
-import React, { useState } from "react";
-import InputField from '../InputField/InputField'
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
+import { useFormik } from "formik";
+import InputField from "../InputField/InputField";
+import { loginApi } from "../api/userService";
+import { loginSchema } from "../../utils/Validations/LoginSchema";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      console.log(values)
+      try {
+        const response = await loginApi(values);
+        if (response && response.data) {
+          localStorage.setItem("UserToken", JSON.stringify(response.data));
+          message.success("Logged in successfully.");
+          navigate("/");
+        } else {
+          message.error("Network error");
+        }
+      } catch (err:any) {
+        message.error(err.response.data.error)
+      }
+    },
+  });
 
   return (
     <div>
       <section>
         <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8 mx-auto">
-          <div className="w-full max-w-md bg-white rounded-lg  shadow-md dark:border dark:border-gray-700">
+          <div className="w-full max-w-md bg-white rounded-lg shadow-md dark:border dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Welcome back!
+                Welcome back!
               </h1>
-              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+              <form onSubmit={formik.handleSubmit} className="space-y-4 md:space-y-6" >
                 <InputField
                   labelText="Your email"
                   inputType="email"
                   name="email"
-                  value={email}
-                  onChange={handleEmailChange}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  messageType="error"
+                  isMessage={true}
                   placeHolder="name@company.com"
+                  message={formik.errors.email}
                 />
 
                 <InputField
                   labelText="Password"
                   inputType="password"
                   name="password"
-                  value={password}
-                  onChange={handlePasswordChange}
+                  isMessage={true}
+                  messageType="error"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeHolder="••••••••"
+                  message={formik.errors.password}
                 />
 
                 <button
@@ -61,7 +81,7 @@ function Login() {
                     to={'/sign-up'}
                     className="font-medium text-blue-500 hover:underline dark:text-primary-500"
                   >
-                    Sign up
+                    SIGN UP
                   </Link>
                 </p>
               </form>

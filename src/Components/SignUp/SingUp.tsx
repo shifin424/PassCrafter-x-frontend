@@ -1,11 +1,15 @@
 import React from "react";
 import InputField from "../InputField/InputField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { PuffLoader } from "react-spinners";
 import { registrationSchema } from "../../utils/Validations/SignUpSchema";
+import { singupApi } from "../api/userService";
+import {message} from 'antd'
+
 
 function SingUp() {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -13,12 +17,24 @@ function SingUp() {
       password: "",
     },
     validationSchema: registrationSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      setTimeout(() => {
-        // Handle your form submission logic here
-        console.log("Form submitted:", values);
-        setSubmitting(false);
-      }, 500);
+    onSubmit:async (values) => {
+      console.log(values)
+      try{
+     const responce = await singupApi(values)
+     if(responce){
+      console.log(responce)
+        if(responce.data){
+          localStorage.setItem('UserToken', JSON.stringify(responce.data));
+          message.success('logged in successfully.');
+          navigate('/');
+        }else{
+          message.error("Network error")
+        }
+     }
+      }catch(err:any){
+        message.error(err.response.data.error)
+      }
+      
     },
   });
 
@@ -74,7 +90,6 @@ function SingUp() {
                 <button
                   type="submit"
                   className="bg-[#4f46e5] hover:bg-[#6f69f0] text-white font-semibold py-2 px-4 rounded-full shadow-md w-full"
-                  disabled={formik.isSubmitting}
                 >
                   {formik.isSubmitting ? (
                     <>
@@ -90,7 +105,7 @@ function SingUp() {
                     to={"/login"}
                     className="font-medium text-blue-500 hover:underline dark:text-primary-500"
                   >
-                    Login
+                    LOGIN
                   </Link>
                 </p>
               </form>
