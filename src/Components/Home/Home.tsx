@@ -3,8 +3,8 @@ import Image from "../../utils/assets/Images/password-img-og.png";
 import Modal from "../Modal/Modal";
 import { InputNumber, Slider, Switch, message } from "antd";
 import { savePasswordApi ,fetchSavedPassword } from "../../api/userService";
-import { useNavigate } from "react-router-dom";
-import { string } from "yup";
+
+
 
 const numbers = "0123456789";
 const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -13,7 +13,6 @@ const specialCharacters = "!@#$%^&*-_=~`|/:;,.";
 
 function Home() {
   const [modalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate()
 
   const [password, setPassword] = useState<string>("");
   const [appName, setAppName] = useState<string>("");
@@ -28,7 +27,7 @@ function Home() {
   const [allOptionsSelected, setAllOptionsSelected] = useState<boolean>(false);
   const [passwordGenerated, setPasswordGenerated] = useState<boolean>(false);
 
-  const [savedPasswordData, setSavedPasswordData] = useState<any>([]);
+  //const [savedPasswordData, setSavedPasswordData] = useState<any>([]);
 
   const openModal = () => {
     setModalOpen(true);

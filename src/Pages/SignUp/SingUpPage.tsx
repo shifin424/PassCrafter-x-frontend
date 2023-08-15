@@ -1,4 +1,4 @@
-import React from 'react'
+
 import SingUp from '../../Components/SignUp/SingUp'
 
 function SingUpPage() {
