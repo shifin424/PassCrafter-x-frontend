@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useFormik } from "formik";
 import InputField from "../InputField/InputField";
-import { loginApi } from "../api/userService";
+import { loginApi } from "../../api/userService";
 import { loginSchema } from "../../utils/Validations/LoginSchema";
 
 function Login() {

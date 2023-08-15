@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { PuffLoader } from "react-spinners";
 import { registrationSchema } from "../../utils/Validations/SignUpSchema";
-import { singupApi } from "../api/userService";
+import { singupApi } from "../../api/userService";
 import {message} from 'antd'
 
 
@@ -18,7 +18,7 @@ function SingUp() {
     },
     validationSchema: registrationSchema,
     onSubmit:async (values) => {
-      console.log(values)
+      
       try{
      const responce = await singupApi(values)
      if(responce){
@@ -33,8 +33,7 @@ function SingUp() {
      }
       }catch(err:any){
         message.error(err.response.data.error)
-      }
-      
+      }  
     },
   });
 
