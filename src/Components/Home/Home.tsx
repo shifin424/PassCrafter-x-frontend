@@ -3,6 +3,10 @@ import Image from "../../utils/assets/Images/password-img-og.png";
 import Modal from "../Modal/Modal";
 import { InputNumber, Slider, Switch, message } from "antd";
 import { savePasswordApi ,fetchSavedPassword } from "../../api/userService";
+import Icon from '../../utils/assets/Images/icon.jpg'
+import Card from "../Card/Card";
+import { useNavigate } from "react-router-dom";
+import Swal, { SweetAlertResult } from "sweetalert2";
 
 
 
@@ -13,6 +17,7 @@ const specialCharacters = "!@#$%^&*-_=~`|/:;,.";
 
 function Home() {
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate()
 
   const [password, setPassword] = useState<string>("");
   const [appName, setAppName] = useState<string>("");
@@ -27,10 +32,29 @@ function Home() {
   const [allOptionsSelected, setAllOptionsSelected] = useState<boolean>(false);
   const [passwordGenerated, setPasswordGenerated] = useState<boolean>(false);
 
-  //const [savedPasswordData, setSavedPasswordData] = useState<any>([]);
+  const [savedPasswordData, setSavedPasswordData] = useState<any>([]);
 
   const openModal = () => {
-    setModalOpen(true);
+    const userToken = localStorage.getItem('UserToken');
+    
+    if (!userToken) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Required',
+        text: 'Please log in first!',
+        confirmButtonText: 'Go to Login',
+        cancelButtonText: 'Cancel', 
+        showCancelButton: true,     
+        showCloseButton: true,
+      }).then((result:SweetAlertResult) => {
+        if (result.isConfirmed) {
+      navigate('/login')
+        }
+      });
+    } else {
+      setModalOpen(true);
+    }
+    
   };
 
   const closeModal = () => {
@@ -47,7 +71,7 @@ function Home() {
           };
         const response =  await fetchSavedPassword(headers)
         if(response && response.data){
-        console.log(response.data)
+          setSavedPasswordData(response.data);
         }else{
           message.error("Network error");
         }
@@ -150,6 +174,15 @@ function Home() {
     }
   };
 
+  const handleCopy = (password:string) => {
+    navigator.clipboard.writeText(password);
+    message.success("Successfully copied");
+  };
+
+  const handleDelete = () => {
+    // Logic for deleting
+  };
+
 
   const onPasswordLengthChange = (value: number | null | undefined) => {
     if (value !== null && value !== undefined) {
@@ -157,9 +190,21 @@ function Home() {
     }
   };
 
+  // interface ListItemProps {
+  //   title: string;
+  // }
+
+  // const listItems: ListItemProps[] = [
+  //   { title: 'Item 1' },
+  //   { title: 'Item 2' },
+  //   { title: 'Item 3' },
+  //   { title: 'Item 4' },
+  //   { title: 'Item 5' },
+  // ];
+
   return (
-    <div>
-      <div className="flex flex-col md:flex-row">
+    <div className="mb-16">
+      <div className="flex flex-col md:flex-row ">
         <div className="flex-1  md:w-1/2">
           <img src={Image} alt="Image" className="h-full w-full object-cover" />
         </div>
@@ -356,6 +401,30 @@ function Home() {
           </div>
         </div>
       </Modal>
+
+  
+      {/* <div className="flex flex-col items-center space-y-4">
+      {listItems.map((item, index) => (
+        <List  key={index} title={item.title} />
+      ))}
+    </div> */}
+   
+
+    <h1 className="text-4xl font-semibold mb-4 ml-10 font-serif ">Saved Password</h1>
+    <div>
+      <div className="flex flex-wrap">
+        {savedPasswordData.map((data: any, index: number) => (
+          <Card
+            key={index}
+            image={<img src={Icon} alt="Card Image" className="rounded-full h-16 w-16" />}
+            head={data.appName}
+            title={`UserName: ${data.userName}`}
+            onCopy={() => handleCopy(data.password)}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+    </div>
     </div>
   );
 }
