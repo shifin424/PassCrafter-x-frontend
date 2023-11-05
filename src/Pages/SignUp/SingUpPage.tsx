@@ -1,12 +1,11 @@
-
-import SingUp from '../../Components/SignUp/SingUp'
+import SingUp from "../../Components/SignUp/SingUp";
 
 function SingUpPage() {
-  return (
-    <div>
-      <SingUp/>
-    </div>
-  )
+    return (
+        <div>
+            <SingUp />
+        </div>
+    );
 }
 
-export default SingUpPage
+export default SingUpPage;
